@@ -950,6 +950,13 @@ public:
     void dump_trimmed_time_processor_domain() const;
 
     /**
+      * \brief Generate automatic temporary buffers for necessary computations.
+      * \details This function simply generates temporary buffers for computations that
+      * are not mapped to a buffer manually.
+      */
+    void gen_temporary_buffers();
+
+    /**
       * \brief Generate C code and print it on stdout.
       * \details Currently C code code generation is very basic and does not
       * support many features compared to the Halide code generator.
@@ -3079,7 +3086,7 @@ public:
       * \details This method is meant to be used to create arguments for function::codegen.
       * See test 141 for an example.
       */
-    buffer* auto_buffer();
+    buffer* auto_buffer(argument_t type);
 
     /**
       * \brief Schedule this computation to run before the computation \p consumer

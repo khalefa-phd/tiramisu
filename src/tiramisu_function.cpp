@@ -1972,6 +1972,25 @@ void function::gen_ordering_schedules()
     DEBUG_INDENT(-4);
 }
 
+void function::gen_temporary_buffers()
+{
+    DEBUG_FCT_NAME(3);
+    DEBUG_INDENT(4);
+
+    for (auto &comp : this->get_computations())
+    {
+        // If the computation needs to access but doesn't:
+        if (comp->has_accesses() && comp->get_access_relation() == NULL)
+        {
+            // Generate an automatic buffer for the computation
+            DEBUG(3, tiramisu::str_dump("Generating automatic buffer for computation " + comp->get_name()));
+            comp->auto_buffer(a_temporary);
+        }
+    }
+
+    DEBUG_INDENT(-4);
+}
+
 void function::gen_time_space_domain()
 {
     DEBUG_FCT_NAME(3);
@@ -2005,6 +2024,7 @@ void tiramisu::function::codegen(const std::vector<tiramisu::buffer *> &argument
     }
     this->set_arguments(arguments);
     this->lift_dist_comps();
+    this->gen_temporary_buffers();
     this->gen_time_space_domain();
     this->gen_isl_ast();
     if (gen_cuda_stmt) {

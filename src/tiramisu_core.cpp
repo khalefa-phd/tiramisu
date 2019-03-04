@@ -1461,14 +1461,13 @@ void computation::apply_transformation_on_schedule(std::string map_str)
     DEBUG_INDENT(-4);
 }
 
-buffer* computation::auto_buffer()
+buffer* computation::auto_buffer(argument_t type)
 {
     DEBUG_FCT_NAME(3);
     DEBUG_INDENT(4);
 
     std::vector<tiramisu::expr> *dim_sizes = this->compute_buffer_size();
     std::string buff_name = "_" + this->name + "_autobuffer";
-    argument_t type = this->schedule_this_computation ? a_output : a_input;
 
     tiramisu::buffer *buffer = new tiramisu::buffer(
             buff_name,
